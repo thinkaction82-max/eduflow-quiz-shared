@@ -15,11 +15,13 @@ export function resultBool(g) {
   return g
 }
 
-// 도메인 점수 분모에서 제외할 "시스템 채점실패" 판정. null(호출 자체가 예외로 실패)도
-// 서버가 명시적으로 보낸 error:true와 동급으로 취급한다 — 둘 다 "학생 발음과 무관하게
-// 채점을 못한 경우"라는 점은 같기 때문.
+// 도메인 점수 분모에서 제외할 "시스템 채점실패(서버가 명시적으로 error:true를 보낸 경우)" 판정.
+// ⚠️ null은 여기 포함시키지 않는다 — null은 "미응답"과 "호출 자체가 예외로 실패"를 구분할
+// 수 없는 값이라(둘 다 같은 null), 여기서 null을 실패로 넣으면 모든 영역에서 "안 푼 문제"까지
+// 분모 제외 대상이 돼버린다(원치 않는 큰 동작 변경). 호출 예외로 인한 실패는 호출부가 별도로
+// (녹음/답변이 실제로 존재했는지를 같이 보고) 추적해야 한다.
 export function isPronGradingFailure(g) {
-  return g === null || (typeof g === 'object' && g !== null && g.error === true)
+  return typeof g === 'object' && g !== null && g.error === true
 }
 
 // 발음 녹음을 채점 서버로 보내고 결과를 해석하는 오케스트레이션. Firebase/브라우저/RN에

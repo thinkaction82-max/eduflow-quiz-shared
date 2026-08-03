@@ -83,8 +83,10 @@ test('resultBool: boolean passthrough, object unwrap, error->null', () => {
   assert.equal(resultBool({ pass: false, error: true }), null)
 })
 
-test('isPronGradingFailure: both null (call exception) and error:true (server) count as failure', () => {
-  assert.equal(isPronGradingFailure(null), true)
+test('isPronGradingFailure: only server-tagged error:true counts, not bare null', () => {
+  // null은 "미응답"과 "호출 예외로 실패"를 구분 못하므로 여기 포함하지 않는다 — 포함시키면
+  // 모든 영역에서 안 푼 문제까지 도메인 분모에서 빠지는 의도치 않은 동작 변경이 생긴다.
+  assert.equal(isPronGradingFailure(null), false)
   assert.equal(isPronGradingFailure({ pass: false, error: true }), true)
   assert.equal(isPronGradingFailure({ pass: false }), false)
   assert.equal(isPronGradingFailure(true), false)
