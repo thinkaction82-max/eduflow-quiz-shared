@@ -4,6 +4,8 @@ import {
   QUESTION_TYPE_IDS, DOMAIN_TYPES, TYPE_DOMAIN,
   shuffle, checkAnswer, fillBlankText, extractQuotedWord, buildQuestionList,
   isAiQuotaError, resultBool, isPronGradingFailure, gradePronunciation,
+  PRON_DISPLAY_MODE, HOMEWORK_PRON_PASS_THRESHOLD, HOMEWORK_PRON_MAX_ATTEMPTS,
+  reinterpretPronunciationPass,
 } from '../index.js'
 
 // 크리티컬규칙7: buildQuestionList(..., {shuffle:false})의 순서가 실수로 바뀌면
@@ -20,10 +22,13 @@ const FIXTURE = {
   prepChoice: [{ answerIndex: 0 }],
   dialogueFill: [{ answerIndex: 0 }],
   pronunciationRecord: [{ text: 'hello' }],
+  pronunciationRecordEn: [{ text: 'hello' }],
+  pronunciationRecordKo: [{ text: 'hello', korean: '안녕' }],
 }
 const EXPECTED_ORDER = [
   'matching', 'multipleChoice', 'fillBlank', 'sentenceFill', 'wordOrder',
-  'translation', 'errorCorrect', 'prepChoice', 'dialogueFill', 'pronunciationRecord',
+  'translation', 'errorCorrect', 'prepChoice', 'dialogueFill',
+  'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo',
 ]
 
 test('buildQuestionList order matches QUESTION_TYPE_IDS coverage and is stable', () => {
@@ -139,4 +144,31 @@ test('gradePronunciation returns null without firing onQuotaExceeded on generic 
   })
   assert.equal(result, null)
   assert.equal(firedQuota, false)
+})
+
+test('PRON_DISPLAY_MODE covers all three pronunciation type ids', () => {
+  assert.equal(PRON_DISPLAY_MODE.pronunciationRecord, 'en-ko')
+  assert.equal(PRON_DISPLAY_MODE.pronunciationRecordEn, 'en')
+  assert.equal(PRON_DISPLAY_MODE.pronunciationRecordKo, 'ko')
+})
+
+test('reinterpretPronunciationPass: recalculates pass at the given threshold', () => {
+  assert.deepEqual(
+    reinterpretPronunciationPass({ pass: false, score: 65 }, HOMEWORK_PRON_PASS_THRESHOLD),
+    { pass: true, score: 65 },
+  )
+  assert.deepEqual(
+    reinterpretPronunciationPass({ pass: true, score: 50 }, HOMEWORK_PRON_PASS_THRESHOLD),
+    { pass: false, score: 50 },
+  )
+})
+
+test('reinterpretPronunciationPass: leaves system grading failures untouched', () => {
+  const failure = { pass: false, score: 0, error: true }
+  assert.deepEqual(reinterpretPronunciationPass(failure), failure)
+  assert.equal(reinterpretPronunciationPass(null), null)
+})
+
+test('HOMEWORK_PRON_MAX_ATTEMPTS is a sane positive retry cap', () => {
+  assert.equal(HOMEWORK_PRON_MAX_ATTEMPTS, 5)
 })

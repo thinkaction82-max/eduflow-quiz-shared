@@ -13,6 +13,8 @@ export const QUESTION_TYPE_IDS = [
   'sentenceFill',
   'dialogueFill',
   'pronunciationRecord',
+  'pronunciationRecordEn',
+  'pronunciationRecordKo',
 ]
 
 export const DOMAIN_TYPES = {
@@ -20,7 +22,7 @@ export const DOMAIN_TYPES = {
   '쓰기': ['translation'],
   '문법': ['errorCorrect', 'wordOrder', 'prepChoice'],
   '독해': ['sentenceFill'],
-  '회화': ['dialogueFill', 'pronunciationRecord'],
+  '회화': ['dialogueFill', 'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo'],
 }
 
 export const TYPE_DOMAIN = Object.fromEntries(

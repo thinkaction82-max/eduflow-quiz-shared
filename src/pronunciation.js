@@ -38,3 +38,26 @@ export async function gradePronunciation({ callFn, audioBase64, mimeType, target
     return null
   }
 }
+
+// 쉐도잉 3유형(pronunciationRecord/En/Ko) 공통 표시모드 매핑 — 웹/모바일이 각자 리터럴로
+// 재정의하면 한쪽만 바뀌는 사고가 나므로(문제유형 그룹핑과 같은 이유) 여기 단일소스로 둔다.
+export const PRON_DISPLAY_MODE = {
+  pronunciationRecord: 'en-ko',
+  pronunciationRecordEn: 'en',
+  pronunciationRecordKo: 'ko',
+}
+
+// 숙제(연습) 모드에서 회차마다 즉시 통과판정을 낼 때 쓰는 통과선과 최대 재시도 횟수.
+// 시험 채점(gradePronunciation이 서버에서 매기는 pass, 75점 고정)과는 별개 기준이다 —
+// 숙제는 "연습 통과선"이 더 낮아야 진행이 되고, 학생에게 보여준 그 판정이 그대로
+// 성적에도 반영돼야 하므로 reinterpretPronunciationPass로 pass를 다시 계산해서 써야 한다.
+export const HOMEWORK_PRON_PASS_THRESHOLD = 60
+export const HOMEWORK_PRON_MAX_ATTEMPTS = 5
+
+// 서버가 준 발음채점 결과(g)의 pass를 숙제 통과선(threshold) 기준으로 다시 계산한다.
+// error:true(시스템 채점실패)는 판정 자체를 못한 것이므로 건드리지 않고 그대로 반환 —
+// 안 그러면 Whisper 장애가 "재시도 실패"로 둔갑해 학생이 계속 재시도하게 된다.
+export function reinterpretPronunciationPass(g, threshold = HOMEWORK_PRON_PASS_THRESHOLD) {
+  if (!g || g.error) return g
+  return { ...g, pass: g.score >= threshold }
+}

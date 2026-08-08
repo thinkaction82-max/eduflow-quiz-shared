@@ -73,5 +73,7 @@ export function buildQuestionList(qs, { shuffle: shouldShuffle = false } = {}) {
   qs.prepChoice?.forEach(q => list.push({ type: 'prepChoice', data: q }))
   qs.dialogueFill?.forEach(q => list.push({ type: 'dialogueFill', data: q }))
   qs.pronunciationRecord?.forEach(q => list.push({ type: 'pronunciationRecord', data: q }))
+  qs.pronunciationRecordEn?.forEach(q => list.push({ type: 'pronunciationRecordEn', data: q }))
+  qs.pronunciationRecordKo?.forEach(q => list.push({ type: 'pronunciationRecordKo', data: q }))
   return list
 }
