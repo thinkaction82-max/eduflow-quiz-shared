@@ -12,17 +12,22 @@ export const QUESTION_TYPE_IDS = [
   'prepChoice',
   'sentenceFill',
   'dialogueFill',
+  'listeningChoice',
   'pronunciationRecord',
   'pronunciationRecordEn',
   'pronunciationRecordKo',
 ]
 
+// 2026-08-09: 어휘/쓰기/문법/독해/회화 → vaca/writing/reading/speaking/listening로 재편.
+// '문법'이 '독해'를 대체한 게 아니라 라벨만 'reading'으로 바뀐 것 — sentenceFill(옛 '독해')은
+// writing으로 편입됐고, listening은 신규 도메인+신규 유형(listeningChoice)이다. 정식 출시 전
+// 결정이라 과거 결과 문서(domainScores가 옛 한글 키)는 마이그레이션하지 않는다.
 export const DOMAIN_TYPES = {
-  '어휘': ['matching', 'multipleChoice', 'fillBlank'],
-  '쓰기': ['translation'],
-  '문법': ['errorCorrect', 'wordOrder', 'prepChoice'],
-  '독해': ['sentenceFill'],
-  '회화': ['dialogueFill', 'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo'],
+  vaca: ['matching', 'multipleChoice', 'fillBlank'],
+  writing: ['translation', 'sentenceFill'],
+  reading: ['errorCorrect', 'wordOrder', 'prepChoice'],
+  speaking: ['dialogueFill', 'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo'],
+  listening: ['listeningChoice'],
 }
 
 export const TYPE_DOMAIN = Object.fromEntries(

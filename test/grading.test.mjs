@@ -21,13 +21,14 @@ const FIXTURE = {
   errorCorrect: [{ wrongWord: 'x' }],
   prepChoice: [{ answerIndex: 0 }],
   dialogueFill: [{ answerIndex: 0 }],
+  listeningChoice: [{ text: 'I am Daesung', korean: '나는 대성이다', options: ['a', 'b', 'c', 'd'], answerIndex: 0 }],
   pronunciationRecord: [{ text: 'hello' }],
   pronunciationRecordEn: [{ text: 'hello' }],
   pronunciationRecordKo: [{ text: 'hello', korean: '안녕' }],
 }
 const EXPECTED_ORDER = [
   'matching', 'multipleChoice', 'fillBlank', 'sentenceFill', 'wordOrder',
-  'translation', 'errorCorrect', 'prepChoice', 'dialogueFill',
+  'translation', 'errorCorrect', 'prepChoice', 'dialogueFill', 'listeningChoice',
   'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo',
 ]
 

@@ -22,6 +22,7 @@ export function checkAnswer(type, data, answer) {
     case 'multipleChoice':
     case 'prepChoice':
     case 'dialogueFill':
+    case 'listeningChoice':
       return answer !== undefined && answer !== null ? answer === data.answerIndex : null
     case 'fillBlank':
       return answer ? answer === data.missingLetter : null
@@ -72,6 +73,7 @@ export function buildQuestionList(qs, { shuffle: shouldShuffle = false } = {}) {
   qs.errorCorrect?.forEach(q => list.push({ type: 'errorCorrect', data: q }))
   qs.prepChoice?.forEach(q => list.push({ type: 'prepChoice', data: q }))
   qs.dialogueFill?.forEach(q => list.push({ type: 'dialogueFill', data: q }))
+  qs.listeningChoice?.forEach(q => list.push({ type: 'listeningChoice', data: q }))
   qs.pronunciationRecord?.forEach(q => list.push({ type: 'pronunciationRecord', data: q }))
   qs.pronunciationRecordEn?.forEach(q => list.push({ type: 'pronunciationRecordEn', data: q }))
   qs.pronunciationRecordKo?.forEach(q => list.push({ type: 'pronunciationRecordKo', data: q }))
