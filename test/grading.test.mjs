@@ -25,11 +25,14 @@ const FIXTURE = {
   pronunciationRecord: [{ text: 'hello' }],
   pronunciationRecordEn: [{ text: 'hello' }],
   pronunciationRecordKo: [{ text: 'hello', korean: '안녕' }],
+  sentenceMeaning: [{ answerIndex: 1 }],
+  passageTF: [{ answerIndex: 0 }],
 }
 const EXPECTED_ORDER = [
   'matching', 'multipleChoice', 'fillBlank', 'sentenceFill', 'wordOrder',
   'translation', 'errorCorrect', 'prepChoice', 'dialogueFill', 'listeningChoice',
   'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo',
+  'sentenceMeaning', 'passageTF',
 ]
 
 test('buildQuestionList order matches QUESTION_TYPE_IDS coverage and is stable', () => {
@@ -67,6 +70,14 @@ test('DOMAIN_TYPES / TYPE_DOMAIN stay inverses of each other', () => {
 
 test('checkAnswer: wordOrder ignores trailing period and case', () => {
   assert.equal(checkAnswer('wordOrder', { answer: 'I like cats.' }, ['I', 'like', 'CATS']), true)
+})
+
+test('checkAnswer: sentenceMeaning/passageTF compare answerIndex', () => {
+  assert.equal(checkAnswer('sentenceMeaning', { answerIndex: 1 }, 1), true)
+  assert.equal(checkAnswer('sentenceMeaning', { answerIndex: 1 }, 0), false)
+  assert.equal(checkAnswer('passageTF', { answerIndex: 0 }, 0), true)
+  assert.equal(checkAnswer('passageTF', { answerIndex: 1 }, 0), false)
+  assert.equal(checkAnswer('passageTF', { answerIndex: 0 }, undefined), null)
 })
 
 test('checkAnswer: matching requires exact set match', () => {

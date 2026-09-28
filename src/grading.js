@@ -23,6 +23,8 @@ export function checkAnswer(type, data, answer) {
     case 'prepChoice':
     case 'dialogueFill':
     case 'listeningChoice':
+    case 'sentenceMeaning':
+    case 'passageTF':
       return answer !== undefined && answer !== null ? answer === data.answerIndex : null
     case 'fillBlank':
       return answer ? answer === data.missingLetter : null
@@ -77,5 +79,8 @@ export function buildQuestionList(qs, { shuffle: shouldShuffle = false } = {}) {
   qs.pronunciationRecord?.forEach(q => list.push({ type: 'pronunciationRecord', data: q }))
   qs.pronunciationRecordEn?.forEach(q => list.push({ type: 'pronunciationRecordEn', data: q }))
   qs.pronunciationRecordKo?.forEach(q => list.push({ type: 'pronunciationRecordKo', data: q }))
+  // 신규 유형은 반드시 맨 끝에 — 기존 시험에 나중에 병합돼도 이미 저장된 wrongIndices가 안 밀린다
+  qs.sentenceMeaning?.forEach(q => list.push({ type: 'sentenceMeaning', data: q }))
+  qs.passageTF?.forEach(q => list.push({ type: 'passageTF', data: q }))
   return list
 }
