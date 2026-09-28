@@ -18,6 +18,7 @@ export const QUESTION_TYPE_IDS = [
   'pronunciationRecordKo',
   'sentenceMeaning',
   'passageTF',
+  'listeningFill',
 ]
 
 // 2026-08-09: 어휘/쓰기/문법/독해/회화 → voca/writing/reading/speaking/listening로 재편.
@@ -29,7 +30,7 @@ export const DOMAIN_TYPES = {
   writing: ['translation', 'sentenceFill'],
   reading: ['errorCorrect', 'wordOrder', 'prepChoice', 'sentenceMeaning', 'passageTF'],
   speaking: ['dialogueFill', 'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo'],
-  listening: ['listeningChoice'],
+  listening: ['listeningChoice', 'listeningFill'],
 }
 
 export const TYPE_DOMAIN = Object.fromEntries(

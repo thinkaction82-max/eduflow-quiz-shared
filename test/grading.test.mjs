@@ -27,12 +27,13 @@ const FIXTURE = {
   pronunciationRecordKo: [{ text: 'hello', korean: '안녕' }],
   sentenceMeaning: [{ answerIndex: 1 }],
   passageTF: [{ answerIndex: 0 }],
+  listeningFill: [{ answerIndex: 0 }],
 }
 const EXPECTED_ORDER = [
   'matching', 'multipleChoice', 'fillBlank', 'sentenceFill', 'wordOrder',
   'translation', 'errorCorrect', 'prepChoice', 'dialogueFill', 'listeningChoice',
   'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo',
-  'sentenceMeaning', 'passageTF',
+  'sentenceMeaning', 'passageTF', 'listeningFill',
 ]
 
 test('buildQuestionList order matches QUESTION_TYPE_IDS coverage and is stable', () => {
@@ -78,6 +79,8 @@ test('checkAnswer: sentenceMeaning/passageTF compare answerIndex', () => {
   assert.equal(checkAnswer('passageTF', { answerIndex: 0 }, 0), true)
   assert.equal(checkAnswer('passageTF', { answerIndex: 1 }, 0), false)
   assert.equal(checkAnswer('passageTF', { answerIndex: 0 }, undefined), null)
+  assert.equal(checkAnswer('listeningFill', { answerIndex: 2 }, 2), true)
+  assert.equal(checkAnswer('listeningFill', { answerIndex: 2 }, 1), false)
 })
 
 test('checkAnswer: matching requires exact set match', () => {

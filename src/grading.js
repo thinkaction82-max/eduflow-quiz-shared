@@ -25,6 +25,7 @@ export function checkAnswer(type, data, answer) {
     case 'listeningChoice':
     case 'sentenceMeaning':
     case 'passageTF':
+    case 'listeningFill':
       return answer !== undefined && answer !== null ? answer === data.answerIndex : null
     case 'fillBlank':
       return answer ? answer === data.missingLetter : null
@@ -82,5 +83,6 @@ export function buildQuestionList(qs, { shuffle: shouldShuffle = false } = {}) {
   // 신규 유형은 반드시 맨 끝에 — 기존 시험에 나중에 병합돼도 이미 저장된 wrongIndices가 안 밀린다
   qs.sentenceMeaning?.forEach(q => list.push({ type: 'sentenceMeaning', data: q }))
   qs.passageTF?.forEach(q => list.push({ type: 'passageTF', data: q }))
+  qs.listeningFill?.forEach(q => list.push({ type: 'listeningFill', data: q }))
   return list
 }
