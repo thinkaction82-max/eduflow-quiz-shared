@@ -28,12 +28,14 @@ const FIXTURE = {
   sentenceMeaning: [{ answerIndex: 1 }],
   passageTF: [{ answerIndex: 0 }],
   listeningFill: [{ answerIndex: 0 }],
+  koToEnChoice: [{ answerIndex: 2 }],
+  spellingOrder: [{ word: 'sister', letters: ['s', 't', 'e', 'r', 'i', 's'] }],
 }
 const EXPECTED_ORDER = [
   'matching', 'multipleChoice', 'fillBlank', 'sentenceFill', 'wordOrder',
   'translation', 'errorCorrect', 'prepChoice', 'dialogueFill', 'listeningChoice',
   'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo',
-  'sentenceMeaning', 'passageTF', 'listeningFill',
+  'sentenceMeaning', 'passageTF', 'listeningFill', 'koToEnChoice', 'spellingOrder',
 ]
 
 test('buildQuestionList order matches QUESTION_TYPE_IDS coverage and is stable', () => {
@@ -81,6 +83,21 @@ test('checkAnswer: sentenceMeaning/passageTF compare answerIndex', () => {
   assert.equal(checkAnswer('passageTF', { answerIndex: 0 }, undefined), null)
   assert.equal(checkAnswer('listeningFill', { answerIndex: 2 }, 2), true)
   assert.equal(checkAnswer('listeningFill', { answerIndex: 2 }, 1), false)
+})
+
+test('checkAnswer: koToEnChoice compares answerIndex', () => {
+  assert.equal(checkAnswer('koToEnChoice', { answerIndex: 2 }, 2), true)
+  assert.equal(checkAnswer('koToEnChoice', { answerIndex: 2 }, 0), false)
+})
+
+test('checkAnswer: spellingOrder joins letters, ignores case, null when nothing placed', () => {
+  const data = { word: 'sister' }
+  assert.equal(checkAnswer('spellingOrder', data, ['s', 'i', 's', 't', 'e', 'r']), true)
+  assert.equal(checkAnswer('spellingOrder', data, ['S', 'I', 'S', 'T', 'E', 'R']), true)
+  assert.equal(checkAnswer('spellingOrder', data, ['s', 't', 'e', 'r', 'i', 's']), false)
+  assert.equal(checkAnswer('spellingOrder', data, ['s', 'i', 's']), false)
+  assert.equal(checkAnswer('spellingOrder', data, []), null)
+  assert.equal(checkAnswer('spellingOrder', data, undefined), null)
 })
 
 test('checkAnswer: matching requires exact set match', () => {

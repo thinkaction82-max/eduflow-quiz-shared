@@ -19,6 +19,8 @@ export const QUESTION_TYPE_IDS = [
   'sentenceMeaning',
   'passageTF',
   'listeningFill',
+  'koToEnChoice',
+  'spellingOrder',
 ]
 
 // 2026-08-09: 어휘/쓰기/문법/독해/회화 → voca/writing/reading/speaking/listening로 재편.
@@ -26,7 +28,7 @@ export const QUESTION_TYPE_IDS = [
 // writing으로 편입됐고, listening은 신규 도메인+신규 유형(listeningChoice)이다. 정식 출시 전
 // 결정이라 과거 결과 문서(domainScores가 옛 한글 키)는 마이그레이션하지 않는다.
 export const DOMAIN_TYPES = {
-  voca: ['matching', 'multipleChoice', 'fillBlank'],
+  voca: ['matching', 'multipleChoice', 'fillBlank', 'koToEnChoice', 'spellingOrder'],
   writing: ['translation', 'sentenceFill'],
   reading: ['errorCorrect', 'wordOrder', 'prepChoice', 'sentenceMeaning', 'passageTF'],
   speaking: ['dialogueFill', 'pronunciationRecord', 'pronunciationRecordEn', 'pronunciationRecordKo'],

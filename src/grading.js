@@ -26,6 +26,7 @@ export function checkAnswer(type, data, answer) {
     case 'sentenceMeaning':
     case 'passageTF':
     case 'listeningFill':
+    case 'koToEnChoice':
       return answer !== undefined && answer !== null ? answer === data.answerIndex : null
     case 'fillBlank':
       return answer ? answer === data.missingLetter : null
@@ -37,6 +38,9 @@ export function checkAnswer(type, data, answer) {
     }
     case 'errorCorrect':
       return answer ? answer === data.wrongWord : null
+    // 철자 배열 — 답은 글자 배열(같은 글자가 두 번 나와도 순서대로 이어붙인 결과만 본다)
+    case 'spellingOrder':
+      return answer?.length ? answer.join('').toLowerCase() === String(data.word || '').toLowerCase() : null
     default:
       return null
   }
@@ -84,5 +88,7 @@ export function buildQuestionList(qs, { shuffle: shouldShuffle = false } = {}) {
   qs.sentenceMeaning?.forEach(q => list.push({ type: 'sentenceMeaning', data: q }))
   qs.passageTF?.forEach(q => list.push({ type: 'passageTF', data: q }))
   qs.listeningFill?.forEach(q => list.push({ type: 'listeningFill', data: q }))
+  qs.koToEnChoice?.forEach(q => list.push({ type: 'koToEnChoice', data: q }))
+  qs.spellingOrder?.forEach(q => list.push({ type: 'spellingOrder', data: q }))
   return list
 }
